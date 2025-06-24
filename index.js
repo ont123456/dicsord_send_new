@@ -99,6 +99,15 @@ function getImageFromEntry(entry) {
  */
 async function checkRssFeed() {
     console.log(`Checking RSS feed: ${RSS_FEED_URL}`);
+    const hour = new Date().getHours();
+
+    // ✅ รันเฉพาะช่วงเวลา 16:00 – 23:59
+    const isInActiveHours = (hour >= 16 && hour < 24);
+    
+    if (!isInActiveHours) {
+        console.log("⏰ Outside active hours (16:00–23:59), skipping RSS check.");
+        return;
+    }
     try {
         const feed = await parser.parseURL(RSS_FEED_URL);
         const channel = client.channels.cache.get(TARGET_CHANNEL_ID);
